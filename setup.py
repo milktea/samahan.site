@@ -35,7 +35,9 @@ setup(name='samahan.site',
           # 'plone.multilingualbehavior',
           'plone.app.versioningbehavior',
           'samahan.policy',
-          'samahan.theme'
+          'samahan.theme',
+          'plone.formwidget.multifile',
+          'collective.contentleadimage',
           # -*- Extra requirements: -*-
       ],
       extras_require={
