@@ -1,0 +1,73 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="samahan.site">
+<body>
+
+<tal:comment tal:condition="nothing">
+    This is a sample view template. It will not be used for rendering the
+    content unless activated by creation of a view class with a matching name.
+    
+    Note that we're using Plone 4 macros. Replace them with Plone 3 macros
+    if needed.
+</tal:comment>
+
+<metal:main fill-slot="content-core">
+  <metal:content-core define-macro="content-core">
+
+<table tal:define="brains view/events" width="100%">
+  <td tal:repeat="item brains">
+    <div tal:define="item_has_leadimage item/hasContentLeadImage;
+                    item_object item/getObject;
+                    item_hide_from_nav item/exclude_from_nav;"
+          tal:condition="not:item_hide_from_nav">
+      <img tal:condition="exists:item_has_leadimage"
+          tal:define="scale item_object/@@images; img python:scale.scale('leadImage', width=280, height=280)"
+          tal:replace="structure python: img.tag() if img else None" />
+      <p tal:content="python: item.Title"></p>
+      <div tal:define="startmonth python: item.start.strftime('%b'); 
+                          startday python: item.start.strftime('%-d');
+                          endmonth python: item.end.strftime('%b');
+                          endday python: item.end.strftime('%-d');
+                           ">
+      <element tal:content="startmonth"></element>
+      <element tal:content="startday"></element>-
+      <element tal:condition="python: startmonth != endmonth" tal:content="endmonth"></element>
+      <element tal:condition="python: (startmonth == endmonth) and (startday != endday)"  tal:content="endday"></element>
+      <a tal:attributes="href python: item.getPath">Read More</a>
+      </div>
+    </div>
+  </td>
+</table>
+
+<table tal:define="brains view/albums">
+  <tr tal:repeat="brain brains">
+    <td tal:content="python: brain['title']"></td>
+    <td>
+      <div tal:repeat="item python: brain['files']">
+        <li><a tal:attributes="href string:${context/absolute_url}/@@edit/++widget++form.widgets.files/@@download/${repeat/item/index}"
+    tal:content="item/filename">Attached File</a></li>
+      </div>
+    </td>
+    <a tal:attributes="href python: brain['path']">View More</a>
+  </tr>
+</table>
+
+<table tal:define="brains view/news_items">
+  <tr tal:repeat="brain brains">
+    <td tal:content="python: brain['title']"></td>
+    <td tal:content="python: brain['description']"></td>
+    <a tal:attributes="href python: brain['path']">Read More</a>
+  </tr>
+</table>
+
+
+  </metal:content-core>
+</metal:main>
+
+</body>
+</html>
+
