@@ -34,6 +34,8 @@ setup(name='samahan.site',
           # 'plone.app.multilingual',
           # 'plone.multilingualbehavior',
           'plone.app.versioningbehavior',
+          'samahan.policy',
+          'samahan.theme'
           # -*- Extra requirements: -*-
       ],
       extras_require={
